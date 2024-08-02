@@ -1,16 +1,17 @@
-import { Sequelize } from 'sequelize-typescript';
-import CustomerModel from '../../db/sequelize/models/customer.model';
-import ProductModel from '../../db/sequelize/models/product.model';
-import OrderItemModel from '../../db/sequelize/models/order-item.model';
-import CustomerRepository from '../customer.repository';
-import Customer from '../../../domain/entities/Customer';
-import Address from '../../../domain/entities/Address';
-import ProductRepository from '../product.repository';
-import Product from '../../../domain/entities/Product';
-import OrderItem from '../../../domain/entities/OrderItem';
-import Order from '../../../domain/entities/Order';
-import { OrderRepository } from '../order.repository';
-import OrderModel from '../../db/sequelize/models/order.model';
+import { Sequelize } from "sequelize-typescript";
+import CustomerModel from "../../db/sequelize/models/customer.model";
+import ProductModel from "../../db/sequelize/models/product.model";
+import OrderItemModel from "../../db/sequelize/models/order-item.model";
+import CustomerRepository from "../customer.repository";
+import Customer from "../../../domain/entities/Customer";
+import Address from "../../../domain/entities/Address";
+import ProductRepository from "../product.repository";
+import Product from "../../../domain/entities/Product";
+import OrderItem from "../../../domain/entities/OrderItem";
+import Order from "../../../domain/entities/Order";
+import { OrderRepository } from "../order.repository";
+import OrderModel from "../../db/sequelize/models/order.model";
+import CustomerDispatcher from "../../../domain/events/customer/customer-dispatcher";
 
 describe("Order repository test", () => {
 
@@ -18,8 +19,8 @@ describe("Order repository test", () => {
 
   beforeEach(async () => {
     sequelize = new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory:',
+      dialect: "sqlite",
+      storage: ":memory:",
       logging: false,
       sync: { force: true },
     });
@@ -38,7 +39,8 @@ describe("Order repository test", () => {
   });
 
   it("should create a new order", async () => {
-    const customerRepository = new CustomerRepository();
+    const customerDispatcher = new CustomerDispatcher();
+    const customerRepository = new CustomerRepository(customerDispatcher);
     const productRepository = new ProductRepository();
     const orderRepository = new OrderRepository();
 
@@ -78,7 +80,8 @@ describe("Order repository test", () => {
   });
 
   it("should update an order", async () => {
-    const customerRepository = new CustomerRepository();
+    const customerDispatcher = new CustomerDispatcher();
+    const customerRepository = new CustomerRepository(customerDispatcher);
     const productRepository = new ProductRepository();
     const orderRepository = new OrderRepository();
 
@@ -124,7 +127,8 @@ describe("Order repository test", () => {
   });
 
   it("should find an order", async () => {
-    const customerRepository = new CustomerRepository();
+    const customerDispatcher = new CustomerDispatcher();
+    const customerRepository = new CustomerRepository(customerDispatcher);
     const productRepository = new ProductRepository();
     const orderRepository = new OrderRepository();
 
@@ -175,7 +179,8 @@ describe("Order repository test", () => {
   });
 
   it("should find all orders", async () => {
-    const customerRepository = new CustomerRepository();
+    const customerDispatcher = new CustomerDispatcher();
+    const customerRepository = new CustomerRepository(customerDispatcher);
     const productRepository = new ProductRepository();
     const orderRepository = new OrderRepository();
 

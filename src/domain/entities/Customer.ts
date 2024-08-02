@@ -1,7 +1,10 @@
-import Address from './Address';
+import CustomerChangeAddressEvent from "../events/customer/customer-change-address.event";
+import { CustomerCreatedEvent } from "../events/customer/customer-created.event";
+import Entity from "./@shared/Entity";
+import Address from "./Address";
 
-export default class Customer {
-  
+export default class Customer extends Entity {
+
   private _id: string;
   private _name: string = "";
   private _address!: Address;
@@ -9,10 +12,17 @@ export default class Customer {
   private _rewardPoints: number = 0;
 
   constructor(id: string, name: string) {
+    super();
     this._id = id;
     this._name = name;
 
     this.validate();
+  }
+
+  static create(id: string, name: string): Customer {
+    const customer = new Customer(id, name);
+    customer.addEvent(new CustomerCreatedEvent(`ID: ${id}, Name: ${name}`));
+    return customer;
   }
 
   validate() {
@@ -31,6 +41,18 @@ export default class Customer {
 
   changeAddress(address: Address) {
     this._address = address;
+
+    this.addEvent(new CustomerChangeAddressEvent({
+      id: this._id,
+      name: this._name,
+      address: {
+        street: address._street,
+        number: address._number,
+        zipcode: address._zipcode,
+        city: address._city,
+        country: address._country,
+      }
+    }));
   }
 
   activate() {
@@ -69,7 +91,7 @@ export default class Customer {
     return this._address._street;
   }
 
-  get zip(): string {
+  get zipcode(): string {
     return this._address._zipcode;
   }
 

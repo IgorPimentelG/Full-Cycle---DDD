@@ -26,7 +26,7 @@ export default class CustomerModel extends Model {
   declare number: number;
 
   @Column({ allowNull: false })
-  declare zip: string;
+  declare zipcode: string;
 
   @Column({ allowNull: false })
   declare city: string;

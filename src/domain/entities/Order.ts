@@ -1,13 +1,15 @@
+import Entity from './@shared/Entity';
 import OrderItem from './OrderItem';
 
-export default class Order {
-  
+export default class Order extends Entity {
+
   private _id: string;
   private _customerId: string;
   private _items: OrderItem[] = [];
   private _total: number;
 
   constructor(id: string, customerId: string, items: OrderItem[]) {
+    super();
     this._id = id;
     this._customerId = customerId;
     this._items = items;

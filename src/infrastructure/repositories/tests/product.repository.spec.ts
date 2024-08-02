@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize-typescript';
-import ProductModel from '../../db/sequelize/models/product.model';
-import Product from '../../../domain/entities/Product';
-import ProductRepository from '../product.repository';
+import { Sequelize } from "sequelize-typescript";
+import ProductModel from "../../db/sequelize/models/product.model";
+import Product from "../../../domain/entities/Product";
+import ProductRepository from "../product.repository";
 
 describe("Product repository test", () => {
 
@@ -9,8 +9,8 @@ describe("Product repository test", () => {
 
   beforeEach(async () => {
     sequelize = new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory:',
+      dialect: "sqlite",
+      storage: ":memory:",
       logging: false,
       sync: { force: true },
     });

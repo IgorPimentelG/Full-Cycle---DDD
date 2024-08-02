@@ -1,9 +1,16 @@
-import Address from '../../domain/entities/Address';
-import Customer from '../../domain/entities/Customer';
-import CustomerRepositoryInterface from '../../domain/repositories/customer-repository';
-import CustomerModel from '../db/sequelize/models/customer.model';
+import Address from "../../domain/entities/Address";
+import Customer from "../../domain/entities/Customer";
+import EventDispatcherInterface from "../../domain/events/@shared/event-dispatcher.interface";
+import CustomerRepositoryInterface from "../../domain/repositories/customer-repository";
+import CustomerModel from "../db/sequelize/models/customer.model";
 
 export default class CustomerRepository implements CustomerRepositoryInterface {
+
+  private _customerDispatcher: EventDispatcherInterface;
+
+  constructor(customerDispatcher: EventDispatcherInterface) {
+    this._customerDispatcher = customerDispatcher;
+  }
 
   async create(entity: Customer): Promise<void> {
     await CustomerModel.create({
@@ -12,11 +19,16 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
       street: entity.street,
       city: entity.city,
       number: entity.number,
-      zip: entity.zip,
+      zipcode: entity.zipcode,
       country: entity.country,
       rewardPoints: entity.rewardPoints,
       active: entity.isActive(),
     });
+
+    entity.events.forEach((event) => {
+      this._customerDispatcher.notify(event);
+    });
+    entity.clearEvents();
   }
   async update(entity: Customer): Promise<void> {
     await CustomerModel.update({
@@ -24,11 +36,16 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
       street: entity.street,
       city: entity.city,
       number: entity.number,
-      zip: entity.zip,
+      zipcode: entity.zipcode,
       country: entity.country,
       rewardPoints: entity.rewardPoints,
       active: entity.isActive(),
     }, { where: { id: entity.id } });
+
+    entity.events.forEach((event) => {
+      this._customerDispatcher.notify(event);
+    });
+    entity.clearEvents();
   }
   async find(id: string): Promise<Customer> {
     try {
@@ -36,7 +53,7 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
       const address = new Address(
         customerModel.street,
         customerModel.number,
-        customerModel.zip,
+        customerModel.zipcode,
         customerModel.city,
         customerModel.country
       );
@@ -46,7 +63,7 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
 
       return customer;
     } catch {
-      throw new Error('Customer not found');
+      throw new Error("Customer not found");
     }
   }
   async findAll(): Promise<Customer[]> {
@@ -55,17 +72,19 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
       const address = new Address(
         customerModel.street,
         customerModel.number,
-        customerModel.zip,
+        customerModel.zipcode,
         customerModel.city,
         customerModel.country,
       );
 
-      const customer = new Customer(customerModel.id, customerModel.name);
+      const customer = Customer.create(customerModel.id, customerModel.name);
       customer.changeAddress(address);
 
       if (customerModel.active) {
         customer.activate();
       }
+
+      customer.clearEvents();
 
       return customer;
     });

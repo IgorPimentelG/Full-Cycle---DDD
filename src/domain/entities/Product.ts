@@ -1,10 +1,13 @@
-export default class Product {
-  
+import Entity from "./@shared/Entity";
+
+export default class Product extends Entity {
+
   private _id: string;
   private _name: string;
   private _price: number;
 
   constructor(id: string, name: string, price: number) {
+    super();
     this._id = id;
     this._name = name;
     this._price = price;
