@@ -1,11 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 import CustomerModel from "../../db/sequelize/models/customer.model";
 import CustomerRepository from "../customer.repository";
-import Customer from "../../../domain/entities/Customer";
-import Address from "../../../domain/entities/Address";
-import CustomerDispatcher from "../../../domain/events/customer/customer-dispatcher";
-import CustomerChangeAddressEvent from "../../../domain/events/customer/customer-change-address.event";
-import { CustomerCreatedEvent } from "../../../domain/events/customer/customer-created.event";
+import Customer from "../../../domain/customer/entities/Customer";
+import Address from "../../../domain/customer/entities/Address";
+import CustomerDispatcher from "../../../domain/customer/entities/events/customer-dispatcher";
+import CustomerChangeAddressEvent from "../../../domain/customer/entities/events/customer-change-address.event";
+import { CustomerCreatedEvent } from "../../../domain/customer/entities/events/customer-created.event";
 
 describe("Customer repository test", () => {
 

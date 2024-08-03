@@ -1,6 +1,6 @@
-import Product from '../../domain/entities/Product';
-import ProductRepositoryInterface from '../../domain/repositories/product-repository';
-import ProductModel from '../db/sequelize/models/product.model';
+import Product from "../../domain/product/entities/Product";
+import ProductRepositoryInterface from "../../domain/product/repositories/product-repository";
+import ProductModel from "../db/sequelize/models/product.model";
 
 export default class ProductRepository implements ProductRepositoryInterface {
 
@@ -23,7 +23,7 @@ export default class ProductRepository implements ProductRepositoryInterface {
     const product = await ProductModel.findOne({ where: { id }, rejectOnEmpty: true });
 
     if (!product) {
-      throw new Error('Product not found');
+      throw new Error("Product not found");
     }
 
     return new Product(

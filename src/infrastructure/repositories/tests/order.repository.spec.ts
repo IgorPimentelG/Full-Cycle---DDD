@@ -3,15 +3,15 @@ import CustomerModel from "../../db/sequelize/models/customer.model";
 import ProductModel from "../../db/sequelize/models/product.model";
 import OrderItemModel from "../../db/sequelize/models/order-item.model";
 import CustomerRepository from "../customer.repository";
-import Customer from "../../../domain/entities/Customer";
-import Address from "../../../domain/entities/Address";
+import Customer from "../../../domain/customer/entities/Customer";
+import Address from "../../../domain/customer/entities/Address";
 import ProductRepository from "../product.repository";
-import Product from "../../../domain/entities/Product";
-import OrderItem from "../../../domain/entities/OrderItem";
-import Order from "../../../domain/entities/Order";
+import OrderItem from "../../../domain/checkout/entities/OrderItem";
+import Order from "../../../domain/checkout/entities/Order";
 import { OrderRepository } from "../order.repository";
 import OrderModel from "../../db/sequelize/models/order.model";
-import CustomerDispatcher from "../../../domain/events/customer/customer-dispatcher";
+import CustomerDispatcher from "../../../domain/customer/entities/events/customer-dispatcher";
+import Product from "../../../domain/product/entities/Product";
 
 describe("Order repository test", () => {
 
