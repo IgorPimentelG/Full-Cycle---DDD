@@ -1,7 +1,7 @@
 import Entity from "../../@shared/entitiy/Entity";
 import ProductInterface from './Product.interface';
 
-export default class Product extends Entity implements ProductInterface {
+export default class ProductB extends Entity implements ProductInterface {
 
   private _id: string;
   private _name: string;

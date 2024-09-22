@@ -106,4 +106,8 @@ export default class Customer extends Entity {
   get country(): string {
     return this._address._country;
   }
+
+  get address(): Address {
+    return this._address;
+  }
 }
