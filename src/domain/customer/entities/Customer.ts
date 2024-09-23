@@ -2,10 +2,10 @@ import CustomerChangeAddressEvent from "./events/customer-change-address.event";
 import { CustomerCreatedEvent } from "./events/customer-created.event";
 import Entity from "../../@shared/entitiy/Entity";
 import Address from "./Address";
+import NotificationError from "../../@shared/notification/notification.error";
 
 export default class Customer extends Entity {
 
-  private _id: string;
   private _name: string = "";
   private _address!: Address;
   private _active: boolean = true;
@@ -17,6 +17,10 @@ export default class Customer extends Entity {
     this._name = name;
 
     this.validate();
+
+    if (this._notification.hasErrors()) {
+      throw new NotificationError(this._notification.errors)
+    }
   }
 
   static create(id: string, name: string): Customer {
@@ -27,11 +31,17 @@ export default class Customer extends Entity {
 
   validate() {
     if (this._name.length === 0) {
-      throw new Error("Name is required");
+      this._notification.addError({
+        context: "customer",
+        message: "Name is required",
+      });
     }
 
     if (this._id.length === 0) {
-      throw new Error("ID is required");
+      this._notification.addError({
+        context: "customer",
+        message: "ID is required",
+      });
     }
   }
 
@@ -73,10 +83,6 @@ export default class Customer extends Entity {
 
   addRewardPoints(points: number) {
     this._rewardPoints += points;
-  }
-
-  get id(): string {
-    return this._id;
   }
 
   get name(): string {

@@ -3,7 +3,6 @@ import OrderItem from './OrderItem';
 
 export default class Order extends Entity {
 
-  private _id: string;
   private _customerId: string;
   private _items: OrderItem[] = [];
   private _total: number;
