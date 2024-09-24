@@ -3,6 +3,7 @@ import { CustomerCreatedEvent } from "./events/customer-created.event";
 import Entity from "../../@shared/entitiy/Entity";
 import Address from "./Address";
 import NotificationError from "../../@shared/notification/notification.error";
+import CustomerValidatorFactory from "../factories/customer.validator.factory";
 
 export default class Customer extends Entity {
 
@@ -30,19 +31,7 @@ export default class Customer extends Entity {
   }
 
   validate() {
-    if (this._name.length === 0) {
-      this._notification.addError({
-        context: "customer",
-        message: "Name is required",
-      });
-    }
-
-    if (this._id.length === 0) {
-      this._notification.addError({
-        context: "customer",
-        message: "ID is required",
-      });
-    }
+    CustomerValidatorFactory.create().validate(this);
   }
 
   changeName(name: string) {

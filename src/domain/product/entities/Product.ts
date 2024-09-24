@@ -1,5 +1,6 @@
 import Entity from "../../@shared/entitiy/Entity";
 import NotificationError from "../../@shared/notification/notification.error";
+import ProductValidatorFactory from "../factories/product.validator.factory";
 import ProductInterface from "./Product.interface";
 
 export default class Product extends Entity implements ProductInterface {
@@ -21,33 +22,7 @@ export default class Product extends Entity implements ProductInterface {
   }
 
   validate() {
-    if (!this._id) {
-      this._notification.addError({
-        context: "product",
-        message: "ID is required",
-      });
-    }
-
-    if (!this._name) {
-      this._notification.addError({
-        context: "product",
-        message: "Name is required",
-      });
-    }
-
-    if (!this._price) {
-      this._notification.addError({
-        context: "product",
-        message: "Price is required",
-      });
-    }
-
-    if (this._price < 0) {
-      this._notification.addError({
-        context: "product",
-        message: "Price must be greater than zero",
-      });
-    }
+    ProductValidatorFactory.create().validate(this);
   }
 
   changeName(name: string) {
